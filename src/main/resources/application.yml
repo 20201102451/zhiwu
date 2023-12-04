@@ -11,6 +11,6 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/test?serviceTimezone=GMT%2b8 #此条配置中，test为本地对应的数据库名称，依据所设计数据库进行更改！
+    url: jdbc:mysql://localhost:3306/welove?serviceTimezone=GMT%2b8 #此条配置中，test为本地对应的数据库名称，依据所设计数据库进行更改！
     username: root
     password: 123456
