@@ -1,0 +1,35 @@
+web:
+  upload-path: G:/images
+
+spring:
+  resources:
+    static-locations: file:${web.upload-path}
+  redis:
+    host: node1
+    port: 6379
+    database:
+      db0: 0
+      db1: 1
+    timeout: 3000
+    pool:
+      max-active: 100
+      max-idle: 3
+      min-idle: 0
+      max-wait: -1
+    password: 123
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/welove?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC&serverTimezone=GMT%2B8
+    username: root
+    password: 1234
+
+
+server:
+  port: 9090
+
+
+
+mybatis:
+  mapper-locations: classpath:/mapper/*.xml
+  type-aliases-package: com.welove.entity
+
