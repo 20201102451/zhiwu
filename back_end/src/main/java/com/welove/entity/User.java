@@ -1,5 +1,6 @@
 package com.welove.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
@@ -15,7 +16,7 @@ import lombok.ToString;
 public class User {
     //自增
     //主键
-    @TableId
+    @TableId(type= IdType.AUTO)
     private Integer userId;
     private Integer studentId;
     private String userName;

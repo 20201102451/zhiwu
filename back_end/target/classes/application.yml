@@ -1,6 +1,10 @@
 web:
   upload-path: G:/images
 
+files:
+  upload:
+    path: D:\coding\filebase\
+
 spring:
   resources:
     static-locations: file:${web.upload-path}

@@ -1,23 +1,32 @@
 <template>
   <div class="wrapper">
-    <div style="margin:150px auto;background-color: #fff; width: 350px; height: 450px; padding: 20px; border-radius: 10px">
+    <div style="margin:150px auto;background-color: #fff; width: 350px; height: 500px; padding: 20px; border-radius: 10px">
       <div style="margin:20px 0; text-align: center; font-size: 24px"><b>注册</b></div>
 
       <el-form :model="user" :rules="rules" ref="loginForm">
         <el-form-item prop="uid">
-          <el-input placeholder="请输入学号" size="medium" style="margin: 10px 0" prefix-icon="el-icon-user" v-model="user.studentId"></el-input>
+          <el-input placeholder="请输入学号" size="medium" prefix-icon="el-icon-user" v-model="user.studentId"></el-input>
         </el-form-item>
         <el-form-item prop="username">
-          <el-input placeholder="请输入用户名" size="medium" style="margin: 10px 0" prefix-icon="el-icon-user" v-model="user.userName"></el-input>
+          <el-input placeholder="请输入用户名" size="medium"  prefix-icon="el-icon-user" v-model="user.userName"></el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input placeholder="请输入密码" size="medium" style="margin: 10px 0" prefix-icon="el-icon-lock" show-password
+          <el-input placeholder="请输入密码" size="medium"  prefix-icon="el-icon-lock" show-password
                     v-model="user.userPassword"></el-input>
         </el-form-item>
 
         <el-form-item prop="confirmedPassword">
-          <el-input placeholder="确认密码" size="medium" style="margin: 10px 0" prefix-icon="el-icon-lock" show-password
+          <el-input placeholder="确认密码" size="medium"  prefix-icon="el-icon-lock" show-password
                     v-model="user.confirmedPassword"></el-input>
+        </el-form-item>
+
+        <el-form-item prop="passwordQuestion">
+          <el-input placeholder="密保问题" size="medium"  prefix-icon="el-icon-lock"
+                    v-model="user.passwordQuestion"></el-input>
+        </el-form-item>
+        <el-form-item prop="passwordAnswer">
+          <el-input placeholder="密保问题答案" size="medium"  prefix-icon="el-icon-lock"
+                    v-model="user.passwordAnswer"></el-input>
         </el-form-item>
 
         <el-form-item style="margin: 10px 0; text-align: right">
@@ -50,8 +59,14 @@ export default {
           {min:3,max:20, message:'长度在3到20个字符',trigger:'blur'}
         ],
         confirmedPassword:[
-          {required:true, message:'确认密码',trigger:'blur'},
+          {required:true, message:'请确认密码',trigger:'blur'},
           {min:3,max:20, message:'长度在3到20个字符',trigger:'blur'}
+        ],
+        passwordQuestion:[
+          {required:true, message:'请输入密保问题',trigger:'blur'}
+        ],
+        passwordAnswer:[
+          {required:true, message:'请输入答案',trigger:'blur'}
         ]
       }
     }
