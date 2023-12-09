@@ -1,3 +1,10 @@
+web:
+  upload-path: E:/软件工程项目/zhiwu/images/
+
+files:
+  upload:
+    path: E:\软件工程项目\zhiwu\filebase\
+
 #下面这些内容是为了让MyBatis映射
 #指定Mybatis的Mapper文件
 mybatis:
@@ -9,8 +16,23 @@ server:
   port: 9090
 
 spring:
+  resources:
+    static-locations: file:${web.upload-path}
+  redis:
+    host: node1
+    port: 6379
+    database:
+      db0: 0
+      db1: 1
+    timeout: 3000
+    pool:
+      max-active: 100
+      max-idle: 3
+      min-idle: 0
+      max-wait: -1
+    password: 123
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/welove?serviceTimezone=GMT%2b8 #此条配置中，test为本地对应的数据库名称，依据所设计数据库进行更改！
+    url: jdbc:mysql://localhost:3306/welove?characterEncoding=UTF-8&serverTimezone=UTC #此条配置中，welove为本地对应的数据库名称，依据所设计数据库进行更改！
     username: root
     password: 123456
