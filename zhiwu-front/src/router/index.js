@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Index from '@/views/index/Index.vue'
 import Post from "@/views/index/Post.vue"
-
+import Chat from "@/views/index/Chat.vue";
 Vue.use(VueRouter)
 
 const routes = [
@@ -19,6 +19,11 @@ const routes = [
                 path: '/post',
                 name: 'post',
                 component: Post
+            },
+            {
+                path: '/chat',
+                name: 'chat',
+                component: Chat
             }
         ]
     },
