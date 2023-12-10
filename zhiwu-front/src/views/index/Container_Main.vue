@@ -4,19 +4,19 @@
       <el-tabs :tab-position="tabPosition" v-model="curTab" @tab-click="getDataHandler">
         <el-tab-pane label="单身广场"></el-tab-pane>
         <el-tab-pane label="曝光板块"></el-tab-pane>
-        <el-tab-pane label="角色管理" name="角色管理"></el-tab-pane>
+        <el-tab-pane label="我的消息" name="我的消息"></el-tab-pane>
         <el-tab-pane label="我的空间" name="我的空间"></el-tab-pane>
         <el-tab-pane label="公告板块"></el-tab-pane>
         <el-tab-pane v-if="isAdmin" label="公告管理"></el-tab-pane>
       </el-tabs>
     </el-aside>
     <router-view></router-view>
-    <el-button class="sendPostButton" size="large" icon="el-icon-edit" @click="dialogVisible = true"
+    <el-button class="sendPostButton" ref="sendPostButton" size="large" icon="el-icon-edit" @click="dialogVisible = true"
       type="primary">我要发帖</el-button>
     <!-- 编辑帖子内容 -->
     <el-dialog title="发布帖子" :visible.sync="dialogVisible" width="30%">
       <span>标题：</span>
-      <el-input type="textarea" autosize placeholder="请输入标题" v-model="sendingPostTitle" maxlength="50"  show-word-limit>
+      <el-input type="textarea" autosize placeholder="请输入标题" v-model="sendingPostTitle" maxlength="50" show-word-limit>
       </el-input>
       <span>内容：</span>
       <div style="margin: 20px 0;"></div>
@@ -41,48 +41,68 @@ export default {
     return {
       tabPosition: 'left',
       dialogVisible: false,
-      curTab:"单身广场",
+      curTab: "单身广场",
       sendingPostTitle: '',
-      sendingPostContent: ''
+      sendingPostContent: '',
+      
+  }
+},
+created() {
+  this.isAdmin = this.checkAdmin()
+  console.log(this.isAdmin)
+},
+methods: {
+  getDataHandler(tab, event) {
+    console.log(tab, event);
+    console.log(tab.index)
+    if (tab.index == 0) {
+      this.$router.push("/post")
+      this.displaySendPostButton();
+    } else if (tab.index == 1) {
+
+
+      this.displaySendPostButton();
+
+    } else if (tab.index == 2) {
+
+      this.displaySendPostButton();
+
+    } else if (tab.index == 3) {
+      this.$router.push("/myInfo")
+      this.hiddenSendPostButton();
+    } else if (tab.index == 4) {
+      this.$router.push("/noticeBoard")
+      this.hiddenSendPostButton();
+
+    } else if (tab.index == 5) {
+      this.$router.push("/noticeManagement")
+      this.hiddenSendPostButton();
+
     }
   },
-  created() {
-    this.isAdmin = this.checkAdmin()
-    console.log(this.isAdmin)
+  checkAdmin() {
+    return localStorage.getItem('admin') !== null;
   },
-  methods: {
-    getDataHandler(tab, event) {
-      console.log(tab, event);
-      console.log(tab.index)
-      if (tab.index == 0) {
-        this.$router.push("/post")
-      } else if (tab.index == 1) {
-
-      } else if (tab.index == 2) {
-
-      } else if (tab.index == 3) {
-        this.$router.push("/myInfo")
-      } else if (tab.index == 4) {
-        this.$router.push("/noticeBoard")
-      } else if (tab.index == 5) {
-        this.$router.push("/noticeManagement")
-      }
-    },
-    checkAdmin() {
-      return localStorage.getItem('admin') !== null;
-    },
+  hiddenSendPostButton(){
+    const sendPostButton = this.$refs.sendPostButton.$el;
+      sendPostButton.style.display = 'none';
+  },
+  displaySendPostButton(){
+    const sendPostButton = this.$refs.sendPostButton.$el;
+      sendPostButton.style.display = '';
   }
+}
 }
 
 
 </script>
 
 <style scoped>
-
 .sendPostButton {
   margin-top: 2%;
   width: 15em;
   height: 3em;
+  display: '';
 }
 
 .el-aside {
