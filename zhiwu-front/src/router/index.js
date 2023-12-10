@@ -9,6 +9,7 @@ const routes = [
     {
         path: '/',
         name: 'index',
+        redirect: '/post',
         component: Index,
         children: [
             {path: '/myInfo', name: 'MyInfo', component: () => import('../views/MySpace.vue')},

@@ -21,4 +21,15 @@ public class PostServiceImpl implements PostService {
     public List<Post> getAllPost() {
         return postMapper.getAllPost();
     }
+
+    @Override
+    public boolean addPost(Post post) {
+
+        return postMapper.addPost(post);
+    }
+
+    @Override
+    public List<Post> getPostByPage(Integer currentCount) {
+        return postMapper.getPostByPage(currentCount);
+    }
 }

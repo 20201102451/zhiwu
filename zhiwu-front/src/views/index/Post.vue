@@ -14,7 +14,7 @@
                     </div>
                     <el-divider content-position="right">
                         <!-- 作者 -->
-                        <el-dropdown trigger="click">   
+                        <el-dropdown trigger="click">
                             <span class="el-dropdown-link">
                                 {{ item.createName }}<i class="el-icon-arrow-down el-icon--right"></i>
                             </span>
@@ -64,15 +64,8 @@ export default {
             loading: false,
             drawer: false,
             direction: 'rtl',
-            postList: [
-                {
-                    postID: '1',
-                    createID: '123456',
-                    createName: '范斌',
-                    postTitle: '这是一个标题',
-                    postContent: '这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容'
-                }
-            ],
+            postList: [],
+            currentCount: 0,
             commentList: [
                 {
                     commentID: '1',
@@ -110,13 +103,13 @@ export default {
     methods: {
         load() {
             this.loading = false;
-            this.postList.push({
-                postID: parseInt(this.postList[this.postList.length - 1].postID) + 1,
-                createID: '123456',
-                createName: '范斌',
-                postTitle: '这是一个标题',
-                postContent: '这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容'
-            })
+            //请求数据
+            this.request.get('/post/get', this.currentCount)
+                .then(res => {
+                    this.postList = res;
+                    console.log(res);
+                })
+            this.currentCount+= this.postList.length;
         },
         loadComment(postID) {
             console.log(postID);
@@ -134,10 +127,10 @@ export default {
 </script>
 
 <style scoped>
-  .el-dropdown-link {
+.el-dropdown-link {
     cursor: pointer;
     color: #409EFF;
-  }
+}
 
 .editComment {
     margin-left: 7%;

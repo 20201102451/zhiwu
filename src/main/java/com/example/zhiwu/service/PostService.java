@@ -11,5 +11,24 @@ import java.util.List;
  */
 
 public interface PostService {
+    /**
+     * 查询所有的帖子
+     * @return
+     */
     List<Post> getAllPost();
+
+    /**
+     * 增加帖子
+     * @param post
+     * @return
+     */
+    boolean addPost(Post post);
+
+
+    /**
+     * 根据页数查询帖子
+     * @return
+     */
+    List<Post> getPostByPage(Integer currentCount);
+
 }
