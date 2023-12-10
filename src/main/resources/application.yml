@@ -36,3 +36,9 @@ spring:
     url: jdbc:mysql://localhost:3306/welove?characterEncoding=UTF-8&serverTimezone=UTC #此条配置中，welove为本地对应的数据库名称，依据所设计数据库进行更改！
     username: root
     password: 123456
+#分页插件配置
+#pagehelper:
+#  helper-dialect: mysql
+#  reasonable: true
+#  support-methods-arguments: true
+#  params: count=countSql

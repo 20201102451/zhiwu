@@ -15,6 +15,9 @@
       type="primary">我要发帖</el-button>
     <!-- 编辑帖子内容 -->
     <el-dialog title="发布帖子" :visible.sync="dialogVisible" width="30%">
+      <span hidden>{{ tabIndex }}</span>
+      <span hidden>{{ userId }}</span>
+
       <span>标题：</span>
       <el-input type="textarea" autosize placeholder="请输入标题" v-model="sendingPostTitle" maxlength="50" show-word-limit>
       </el-input>
@@ -46,7 +49,8 @@ export default {
       curTab: "单身广场",
       sendingPostTitle: '',
       sendingPostContent: '',
-      tabIndex: '',
+      tabIndex: '0',
+      userId: ''
     }
   },
   created() {
@@ -56,6 +60,8 @@ export default {
   methods: {
     getDataHandler(tab, event) {
       this.tabIndex = tab.index;
+      this.userId = JSON.parse(localStorage.getItem("user")).userId.toString();
+
       console.log(tab, event);
       console.log(tab.index)
       if (tab.index == 0) {
@@ -96,19 +102,43 @@ export default {
       //关闭发帖页面
       this.dialogVisible = false
       //获取对象信息
+      const createID = JSON.parse(localStorage.getItem("user")).userId.toString();
+      const plateID = this.tabIndex.toString();
+
+      console.log(createID);
+      console.log(plateID);
       const postObject = {
-        plateID: this.tabIndex,
+        plateId: plateID,
+        createId: createID,
         postTitle: this.sendingPostTitle,
         postContent: this.sendingPostContent,
-        createID: JSON.parse(localStorage.getItem("user")).userId
       }
       //后台发送请求
-      this.request.post('url',postObject)
-      .then(res => {
-        //接收后台返回数据
-        console.log(res.data.records);
-      })
+      this.request.post('/post/add', JSON.stringify(postObject))
+        .then(res => {
+          //接收后台返回数据
+          console.log(res.code);
+          const code = res.code;
+          if(code == '200'){
+            this.sendPostSuccess(res.data);
+          }else{
+            this.sendPostFail(res.data);
+          }
+        })
 
+    },
+    sendPostSuccess(msg) {
+      this.$notify({
+        title: '成功',
+        message: msg,
+        type: 'success'
+      });
+    },
+    sendPostFail(msg) {
+      this.$notify.error({
+        title: '错误',
+        message: msg
+      });
     }
   }
 }

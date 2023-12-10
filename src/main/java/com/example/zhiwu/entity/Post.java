@@ -7,17 +7,25 @@ package com.example.zhiwu.entity;
 
 public class Post {
     private Integer postId;
-    private Integer plateId;
-    private Integer createId;
+    private String plateId;
+    private String createId;
     private String postTitle;
     private String postContent;
+
+    public Post(Integer postId, String plateId, String createId, String postTitle, String postContent) {
+        this.postId = postId;
+        this.plateId = plateId;
+        this.createId = createId;
+        this.postTitle = postTitle;
+        this.postContent = postContent;
+    }
 
     @Override
     public String toString() {
         return "Post{" +
                 "postId=" + postId +
-                ", plateId=" + plateId +
-                ", createId=" + createId +
+                ", plateId='" + plateId + '\'' +
+                ", createId='" + createId + '\'' +
                 ", postTitle='" + postTitle + '\'' +
                 ", postContent='" + postContent + '\'' +
                 '}';
@@ -31,19 +39,19 @@ public class Post {
         this.postId = postId;
     }
 
-    public Integer getPlateId() {
+    public String getPlateId() {
         return plateId;
     }
 
-    public void setPlateId(Integer plateId) {
+    public void setPlateId(String plateId) {
         this.plateId = plateId;
     }
 
-    public Integer getCreateId() {
+    public String getCreateId() {
         return createId;
     }
 
-    public void setCreateId(Integer createId) {
+    public void setCreateId(String createId) {
         this.createId = createId;
     }
 
@@ -64,13 +72,5 @@ public class Post {
     }
 
     public Post() {
-    }
-
-    public Post(Integer postId, Integer plateId, Integer createId, String postTitle, String postContent) {
-        this.postId = postId;
-        this.plateId = plateId;
-        this.createId = createId;
-        this.postTitle = postTitle;
-        this.postContent = postContent;
     }
 }
