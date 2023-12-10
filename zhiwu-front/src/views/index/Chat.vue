@@ -48,26 +48,25 @@
         <span>发送消息</span>
         <el-input type="textarea" :rows="1" placeholder="请输入内容" v-model="textarea" maxlength="255" show-word-limit>
         </el-input>
-        <el-button style="float: right; margin-top:5px;" type="primary" plain onclick="sendMsg()">发送</el-button>
+        <el-button style="float: right; margin-top:5px;" type="primary" plain @click="sendMsg()">发送</el-button>
       </div>
     </el-drawer>
   </div>
 </template>
 <script>
 import chat from "@/views/index/Chat.vue";
-const socket =new WebSocket("ws://localhost:8080")
-socket.onopen =function (event) {
+
+const socket = new WebSocket("ws://localhost:8080")
+socket.onopen = function (event) {
   console.log("连接已打开");
 }
-socket.onmessage =function (event) {
-  console.log("收到回复"+event.data);
+socket.onmessage = function (event) {
+  console.log("收到回复" + event.data);
 }
-socket.onclose =function (event) {
+socket.onclose = function (event) {
   console.log("连接已关闭");
 }
-function sendMsg(){
-  socket.send("Hello");
-}
+
 
 export default {
   data() {
@@ -124,8 +123,8 @@ export default {
         this.msg[i].msgContent = "这是之前的消息"
       }
     },
-    sendMessage() {
-      console.log('ok');
+    sendMsg() {
+      socket.send("Hello");
     }
   },
 }
