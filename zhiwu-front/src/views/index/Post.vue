@@ -12,7 +12,18 @@
                     <div class="content">
                         {{ item.postContent }}
                     </div>
-                    <el-divider content-position="right">{{ item.createName }}</el-divider>
+                    <el-divider content-position="right">
+                        <!-- 作者 -->
+                        <el-dropdown trigger="click">   
+                            <span class="el-dropdown-link">
+                                {{ item.createName }}<i class="el-icon-arrow-down el-icon--right"></i>
+                            </span>
+                            <el-dropdown-menu slot="dropdown">
+                                <el-dropdown-item @click="">访问空间</el-dropdown-item>
+                                <el-dropdown-item @click="">发起私聊</el-dropdown-item>
+                            </el-dropdown-menu>
+                        </el-dropdown>
+                    </el-divider>
                 </el-card>
             </li>
         </ul>
@@ -24,8 +35,7 @@
                 <li>
                     <el-card class="comment-card">
                         <div slot="header" class="clearfix">
-                            <span>{{ item.postID }}</span>
-                            <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+                            <span>{{ item.userName }}:</span>
                         </div>
                         <div>
                             {{ item.commentContent }}
@@ -36,9 +46,10 @@
             <!-- 编辑评论的地方 -->
             <div class="editComment">
                 <span>编辑评论</span>
-                <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="textarea" maxlength="255"  show-word-limit>
+                <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="textarea" maxlength="255" show-word-limit
+                    style="margin-top: 1%;">
                 </el-input>
-                <el-button style="float: right;" type="primary" plain>发布</el-button>
+                <el-button style="float: right;" type="primary" plain @click="sendComment">发布</el-button>
             </div>
 
         </el-drawer>
@@ -64,8 +75,25 @@ export default {
             ],
             commentList: [
                 {
+                    commentID: '1',
                     postID: '',
-                    commentContent: ''
+                    userID: '894651',
+                    userName: '用户1',
+                    commentContent: '这是第一段评论'
+                },
+                {
+                    commentID: '2',
+                    postID: '',
+                    userID: '894651',
+                    userName: '用户2',
+                    commentContent: '这是第二段评论'
+                },
+                {
+                    commentID: '3',
+                    postID: '',
+                    userID: '894651',
+                    userName: '用户3',
+                    commentContent: '这是第三段评论'
                 }
             ],
             textarea: ''
@@ -95,8 +123,10 @@ export default {
             this.drawer = true;
             for (let i = 0; i < this.commentList.length; i++) {
                 this.commentList[i].postID = postID;
-                this.commentList[i].commentContent = "这是一段评论"
             }
+        },
+        sendComment() {
+            alert(this.textarea)
         }
     }
 }
@@ -104,7 +134,12 @@ export default {
 </script>
 
 <style scoped>
-.editComment{
+  .el-dropdown-link {
+    cursor: pointer;
+    color: #409EFF;
+  }
+
+.editComment {
     margin-left: 7%;
     margin-right: 5%;
 }
@@ -135,9 +170,12 @@ export default {
 .box-card {
     width: 75em;
 }
+
 ::-webkit-scrollbar {
-  display: none; /* 隐藏滚动条 */
+    display: none;
+    /* 隐藏滚动条 */
 }
+
 .postCSS {
     margin-top: 1%;
     height: 50em;
