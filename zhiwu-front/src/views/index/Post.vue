@@ -1,30 +1,119 @@
 <template>
-    <el-card class="box-card">
-        <div slot="header" class="clearfix">
-            <span>卡片名称</span>
-            <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
-        </div>
-        <div v-for="o in 4" :key="o" class="text item">
-            {{ '列表内容 ' + o }}
-        </div>
-    </el-card>
+    <div class="postCSS">
+        <ul class="infinite-list" v-infinite-scroll="load"
+            style="overflow:auto; height: 49em; width: 80em; list-style: none;" infinite-scroll-disabled="disabled">
+            <li v-for="item in postList" class="infinite-list-item">
+                <el-card class="box-card">
+                    <div slot="header" class="clearfix">
+                        <span style="font-weight: bolder;">{{ item.postTitle }}</span>
+                        <el-button style="float: right; padding: 3px 0" type="text"
+                            @click="loadComment(item.postID)">查看评论</el-button>
+                    </div>
+                    <div class="content">
+                        {{ item.postContent }}
+                    </div>
+                    <el-divider content-position="right">{{ item.createName }}</el-divider>
+                </el-card>
+            </li>
+        </ul>
+        <p v-if="loading">加载中...</p>
+        <p v-if="noMore">没有更多了</p>
+        <!--这是抽屉评论弹出框-->
+        <el-drawer title="我是标题" :visible.sync="drawer" :with-header="false">
+            <ul v-for="(item, index) in commentList" :key="index" style="list-style: none;">
+                <li>
+                    <el-card class="comment-card">
+                        <div slot="header" class="clearfix">
+                            <span>{{ item.postID }}</span>
+                            <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+                        </div>
+                        <div>
+                            {{ item.commentContent }}
+                        </div>
+                    </el-card>
+                </li>
+            </ul>
+            <!-- 编辑评论的地方 -->
+            <div class="editComment">
+                <span>编辑评论</span>
+                <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="textarea" maxlength="255"  show-word-limit>
+                </el-input>
+                <el-button style="float: right;" type="primary" plain>发布</el-button>
+            </div>
+
+        </el-drawer>
+    </div>
 </template>
 
 <script>
 export default {
     data() {
         return {
-
+            count: 0,
+            loading: false,
+            drawer: false,
+            direction: 'rtl',
+            postList: [
+                {
+                    postID: '1',
+                    createID: '123456',
+                    createName: '范斌',
+                    postTitle: '这是一个标题',
+                    postContent: '这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容'
+                }
+            ],
+            commentList: [
+                {
+                    postID: '',
+                    commentContent: ''
+                }
+            ],
+            textarea: ''
+        }
+    }
+    , computed: {
+        noMore() {
+            return this.count >= 20
+        },
+        disabled() {
+            return this.loading || this.noMore
         }
     },
     methods: {
-
+        load() {
+            this.loading = false;
+            this.postList.push({
+                postID: parseInt(this.postList[this.postList.length - 1].postID) + 1,
+                createID: '123456',
+                createName: '范斌',
+                postTitle: '这是一个标题',
+                postContent: '这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容'
+            })
+        },
+        loadComment(postID) {
+            console.log(postID);
+            this.drawer = true;
+            for (let i = 0; i < this.commentList.length; i++) {
+                this.commentList[i].postID = postID;
+                this.commentList[i].commentContent = "这是一段评论"
+            }
+        }
     }
 }
 
 </script>
 
 <style scoped>
+.editComment{
+    margin-left: 7%;
+    margin-right: 5%;
+}
+
+
+.comment-card {
+    margin-right: 5%;
+}
+
 .text {
     font-size: 14px;
 }
@@ -44,6 +133,13 @@ export default {
 }
 
 .box-card {
-    width: 480px;
+    width: 75em;
+}
+::-webkit-scrollbar {
+  display: none; /* 隐藏滚动条 */
+}
+.postCSS {
+    margin-top: 1%;
+    height: 50em;
 }
 </style>

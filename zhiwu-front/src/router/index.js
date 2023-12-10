@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Index from '@/views/index/Index.vue'
+import Post from "@/views/index/Post.vue"
 
 Vue.use(VueRouter)
 
@@ -14,6 +15,11 @@ const routes = [
             {path: '/password', name: 'Password', component: () => import('../views/Password.vue')},
             {path: '/noticeManagement', name: 'noticeManagement', component: () => import('../views/NoticeManagement.vue')},
             {path: '/noticeBoard', name: 'noticeBoard', component: () => import('../views/NoticeBoard.vue')},
+            {
+                path: '/post',
+                name: 'post',
+                component: Post
+            }
         ]
     },
     {path: '/login', name: 'Login', component: () => import('../views/Login.vue')},

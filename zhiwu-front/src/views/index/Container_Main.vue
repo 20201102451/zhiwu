@@ -10,9 +10,6 @@
         <el-tab-pane v-if="isAdmin" label="公告管理"></el-tab-pane>
       </el-tabs>
     </el-aside>
-    <!--        <el-main>-->
-    <!--            <Post></Post>-->
-    <!--        </el-main>-->
     <router-view></router-view>
   </el-container>
 </template>
@@ -39,7 +36,7 @@ export default {
       console.log(tab, event);
       console.log(tab.index)
       if (tab.index == 0) {
-
+        this.$router.push("/post")
       } else if (tab.index == 1) {
 
       } else if (tab.index == 2) {
