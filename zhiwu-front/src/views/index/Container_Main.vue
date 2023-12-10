@@ -24,7 +24,8 @@
       </el-input>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">发 布</el-button>
+        <el-button type="primary" @click="sendPost">发 布</el-button>
+
       </span>
     </el-dialog>
   </el-container>
@@ -44,54 +45,70 @@ export default {
       curTab: "单身广场",
       sendingPostTitle: '',
       sendingPostContent: '',
-      
-  }
-},
-created() {
-  this.isAdmin = this.checkAdmin()
-  console.log(this.isAdmin)
-},
-methods: {
-  getDataHandler(tab, event) {
-    console.log(tab, event);
-    console.log(tab.index)
-    if (tab.index == 0) {
-      this.$router.push("/post")
-      this.displaySendPostButton();
-    } else if (tab.index == 1) {
-
-
-      this.displaySendPostButton();
-
-    } else if (tab.index == 2) {
-
-      this.displaySendPostButton();
-
-    } else if (tab.index == 3) {
-      this.$router.push("/myInfo")
-      this.hiddenSendPostButton();
-    } else if (tab.index == 4) {
-      this.$router.push("/noticeBoard")
-      this.hiddenSendPostButton();
-
-    } else if (tab.index == 5) {
-      this.$router.push("/noticeManagement")
-      this.hiddenSendPostButton();
-
+      tabIndex: '',
     }
   },
-  checkAdmin() {
-    return localStorage.getItem('admin') !== null;
+  created() {
+    this.isAdmin = this.checkAdmin()
+    console.log(this.isAdmin)
   },
-  hiddenSendPostButton(){
-    const sendPostButton = this.$refs.sendPostButton.$el;
+  methods: {
+    getDataHandler(tab, event) {
+      this.tabIndex = tab.index;
+      console.log(tab, event);
+      console.log(tab.index)
+      if (tab.index == 0) {
+        this.$router.push("/post")
+        this.displaySendPostButton();
+      } else if (tab.index == 1) {
+        this.displaySendPostButton();
+      } else if (tab.index == 2) {
+
+        this.hiddenSendPostButton();
+
+      } else if (tab.index == 3) {
+        this.$router.push("/myInfo")
+        this.hiddenSendPostButton();
+      } else if (tab.index == 4) {
+        this.$router.push("/noticeBoard")
+        this.hiddenSendPostButton();
+
+      } else if (tab.index == 5) {
+        this.$router.push("/noticeManagement")
+        this.hiddenSendPostButton();
+
+      }
+    },
+    checkAdmin() {
+      return localStorage.getItem('admin') !== null;
+    },
+    hiddenSendPostButton() {
+      const sendPostButton = this.$refs.sendPostButton.$el;
       sendPostButton.style.display = 'none';
-  },
-  displaySendPostButton(){
-    const sendPostButton = this.$refs.sendPostButton.$el;
+    },
+    displaySendPostButton() {
+      const sendPostButton = this.$refs.sendPostButton.$el;
       sendPostButton.style.display = '';
+    },
+    sendPost() {
+      //关闭发帖页面
+      this.dialogVisible = false
+      //获取对象信息
+      const postObject = {
+        plateID: this.tabIndex,
+        postTitle: this.sendingPostTitle,
+        postContent: this.sendingPostContent,
+        createID: JSON.parse(localStorage.getItem("user")).userId
+      }
+      //后台发送请求
+      this.request.post('url',postObject)
+      .then(res => {
+        //接收后台返回数据
+        console.log(res.data.records);
+      })
+
+    }
   }
-}
 }
 
 
