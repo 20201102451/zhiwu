@@ -109,6 +109,12 @@ export default {
   methods: {
     load() {
       this.loading = false;
+      let uid = JSON.parse(localStorage.getItem('user')).userId
+      this.request.get('/chat/get',uid).then(res=>{
+        this.msgList=res;
+        console.log(res);
+      })
+
       this.msgList.push({
         msgListID: parseInt(this.msgList[this.msgList.length - 1].msgListID) + 1,
         createrID: '一个 ID',
