@@ -152,7 +152,7 @@ export default {
             } else {
               console.log(res)
               // reset router or next time u login ,the router is the old one and some errors will occur
-              this.$router.push("/")
+              this.$router.push("/noticeManagement")
               localStorage.setItem('admin', JSON.stringify(res.data))
               this.$message.success("登陆成功")
             }

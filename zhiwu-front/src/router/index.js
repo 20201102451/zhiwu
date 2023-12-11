@@ -3,13 +3,14 @@ import VueRouter from 'vue-router'
 import Index from '@/views/index/Index.vue'
 import Post from "@/views/index/Post.vue"
 import Chat from "@/views/index/Chat.vue";
+import Post2 from "@/views/index/Post2.vue"
 Vue.use(VueRouter)
 
 const routes = [
     {
         path: '/',
         name: 'index',
-        redirect: '/post',
+        redirect: '/post/single',
         component: Index,
         children: [
             {path: '/myInfo', name: 'MyInfo', component: () => import('../views/MySpace.vue')},
@@ -17,9 +18,14 @@ const routes = [
             {path: '/noticeManagement', name: 'noticeManagement', component: () => import('../views/NoticeManagement.vue')},
             {path: '/noticeBoard', name: 'noticeBoard', component: () => import('../views/NoticeBoard.vue')},
             {
-                path: '/post',
+                path: '/post/single',
                 name: 'post',
                 component: Post
+            },
+            {
+                path: '/post/love',
+                name: 'post2',
+                component: Post2
             },
             {
                 path: '/chat',

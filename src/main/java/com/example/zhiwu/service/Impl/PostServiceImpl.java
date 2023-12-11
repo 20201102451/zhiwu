@@ -29,7 +29,12 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> getPostByPage(Integer currentCount) {
-        return postMapper.getPostByPage(currentCount);
+    public List<Post> getPostByPage(Integer plateId,Integer currentCount) {
+        return postMapper.getPostByPage(plateId,currentCount);
+    }
+
+    @Override
+    public boolean delPostById(Integer postId) {
+        return postMapper.delPostById(postId);
     }
 }
