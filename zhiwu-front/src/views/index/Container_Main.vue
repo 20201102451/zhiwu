@@ -3,7 +3,7 @@
     <el-aside width="200px">
       <el-tabs :tab-position="tabPosition" v-model="curTab" @tab-click="getDataHandler">
         <el-tab-pane label="单身广场"></el-tab-pane>
-        <el-tab-pane label="曝光板块"></el-tab-pane>
+        <el-tab-pane label="恋爱经验"></el-tab-pane>
         <el-tab-pane label="我的消息" name="我的消息"></el-tab-pane>
         <el-tab-pane label="我的空间" name="我的空间"></el-tab-pane>
         <el-tab-pane label="公告板块"></el-tab-pane>
@@ -11,13 +11,10 @@
       </el-tabs>
     </el-aside>
     <router-view></router-view>
-    <el-button class="sendPostButton" ref="sendPostButton" size="large" icon="el-icon-edit" @click="dialogVisible = true"
+    <el-button v-show="!this.$store.state.isAdmin" class="sendPostButton" ref="sendPostButton" size="large" icon="el-icon-edit" @click="dialogVisible = true"
       type="primary">我要发帖</el-button>
     <!-- 编辑帖子内容 -->
     <el-dialog title="发布帖子" :visible.sync="dialogVisible" width="30%">
-      <span hidden>{{ tabIndex }}</span>
-      <span hidden>{{ userId }}</span>
-
       <span>标题：</span>
       <el-input type="textarea" autosize placeholder="请输入标题" v-model="sendingPostTitle" maxlength="50" show-word-limit>
       </el-input>
@@ -28,7 +25,6 @@
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="sendPost">发 布</el-button>
-
       </span>
     </el-dialog>
   </el-container>
@@ -37,6 +33,7 @@
 <script>
 import Post from './Post.vue';
 import Chat from './Chat.vue';
+import { mapGetters, mapMutations } from 'vuex';
 export default {
   components: {
     Post,
@@ -49,31 +46,31 @@ export default {
       curTab: "单身广场",
       sendingPostTitle: '',
       sendingPostContent: '',
-      tabIndex: '0',
-      userId: ''
+      userId: '',
     }
   },
   created() {
+    this.$store.state.isAdmin = this.checkAdmin()
     this.isAdmin = this.checkAdmin()
     console.log(this.isAdmin)
   },
   methods: {
     getDataHandler(tab, event) {
-      this.tabIndex = tab.index;
-      this.userId = JSON.parse(localStorage.getItem("user")).userId.toString();
-
-      console.log(tab, event);
-      console.log(tab.index)
+      this.$store.state.tabIndex = tab.index;
+      if(!this.isAdmin){
+        this.userId = JSON.parse(localStorage.getItem("user")).userId.toString();
+      }
       if (tab.index == 0) {
-        this.$router.push("/post")
+        this.$router.push("/post/single")
         this.displaySendPostButton();
       } else if (tab.index == 1) {
+        this.$router.push("/post/love")
         this.displaySendPostButton();
       } else if (tab.index == 2) {
 
+        this.$router.push("/chat")
         this.hiddenSendPostButton();
 
-        this.$router.push("/chat")
       } else if (tab.index == 3) {
         this.$router.push("/myInfo")
         this.hiddenSendPostButton();
@@ -84,7 +81,6 @@ export default {
       } else if (tab.index == 5) {
         this.$router.push("/noticeManagement")
         this.hiddenSendPostButton();
-
       }
     },
     checkAdmin() {
@@ -103,7 +99,7 @@ export default {
       this.dialogVisible = false
       //获取对象信息
       const createID = JSON.parse(localStorage.getItem("user")).userId.toString();
-      const plateID = this.tabIndex.toString();
+      const plateID = this.$store.state.tabIndex;
 
       console.log(createID);
       console.log(plateID);
@@ -119,9 +115,9 @@ export default {
           //接收后台返回数据
           console.log(res.code);
           const code = res.code;
-          if(code == '200'){
+          if (code == '200') {
             this.sendPostSuccess(res.data);
-          }else{
+          } else {
             this.sendPostFail(res.data);
           }
         })

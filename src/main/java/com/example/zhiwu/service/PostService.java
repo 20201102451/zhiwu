@@ -29,6 +29,13 @@ public interface PostService {
      * 根据页数查询帖子
      * @return
      */
-    List<Post> getPostByPage(Integer currentCount);
+    List<Post> getPostByPage(Integer plateId,Integer currentCount);
+
+    /**
+     * 根据帖子Id删除帖子
+     * @param postId
+     * @return
+     */
+    boolean delPostById(Integer postId);
 
 }
