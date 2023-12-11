@@ -14,15 +14,15 @@
         <li v-for="item in msgList" class="infinite-list-item">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
-              <span style="font-weight: bolder;">{{ item.createrID }}与{{ item.associaterID }}的聊天框</span>
+              <span style="font-weight: bolder;">{{ item.createrId }}与{{ item.associaterId }}的聊天框</span>
               <el-button style="float: right; padding: 3px 0" type="text"
-                         @click="loadComment(item.msgListID)">聊天
+                         @click="loadComment(item.msgListId)">聊天
               </el-button>
             </div>
             <div class="content">
-              这里其实是消息的内容{{ item.msgListID }}
+              这里其实是消息的内容{{ item.msgListId }}
             </div>
-            <el-divider content-position="right">这里其实是消息的时间{{ item.msgListID }}</el-divider>
+            <el-divider content-position="right">这里其实是消息的时间{{ item.msgListId }}</el-divider>
           </el-card>
         </li>
       </ul>
@@ -85,13 +85,8 @@ export default {
       loading: false,
       drawer: false,
       direction: 'ltr',
-      msgList: [
-        {
-          msgListID: 0,
-          createrID: '一个 ID',
-          associaterID: '另一个 ID',
-        },
-      ],
+      msgList: [],
+      currentCount:0,
       textarea: ''
     };
   },
@@ -110,16 +105,18 @@ export default {
     load() {
       this.loading = false;
       let uid = JSON.parse(localStorage.getItem('user')).userId
-      this.request.get('/chat/get',uid).then(res=>{
+      this.request.get('/chat/get', this.currentCount,uid)
+          .then(res=>{
         this.msgList=res;
         console.log(res);
       })
-
-      this.msgList.push({
-        msgListID: parseInt(this.msgList[this.msgList.length - 1].msgListID) + 1,
-        createrID: '一个 ID',
-        associaterID: '另一个 ID',
-      })
+      //
+      // this.msgList.push({
+      //   msgListID: parseInt(this.msgList[this.msgList.length - 1].msgListID) + 1,
+      //   createrID: '一个 ID',
+      //   associaterID: '另一个 ID',
+      // })
+      this.currentCount+= this.msgList.length;
     },
     loadComment(msgID) {
       console.log(msgID);
