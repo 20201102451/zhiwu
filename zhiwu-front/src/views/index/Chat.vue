@@ -53,16 +53,8 @@
 <script>
 import chat from "@/views/index/Chat.vue";
 
-const socket = new WebSocket("ws://localhost:8080")
-socket.onopen = function (event) {
-  console.log("连接已打开");
-}
-socket.onmessage = function (event) {
-  console.log("收到回复" + event.data);
-}
-socket.onclose = function (event) {
-  console.log("连接已关闭");
-}
+
+
 
 
 export default {
@@ -100,6 +92,16 @@ export default {
     }
   },
   created() {
+    const socket = new WebSocket("ws://localhost:8181");
+    socket.onopen = function (event) {
+      console.log("连接已打开");
+    };
+    socket.onmessage = function (event) {
+      console.log("收到回复" + event.data);
+    };
+    socket.onclose = function (event) {
+      console.log("连接已关闭");
+    };
     if (!this.$store.state.isAdmin) {
       this.currentUserId = JSON.parse(localStorage.getItem('user')).userId;
     }else{
@@ -111,7 +113,7 @@ export default {
       this.loading = false;
       let uid = this.currentUserId;
       if(this.currentUserId != 'Admin'){
-      this.request.get('/chat/get', this.currentCount,uid)
+      this.request.get('/chat/getbypage', this.currentCount,uid)
           .then(res=>{
         this.msgList=res;
         console.log(res);
@@ -129,7 +131,7 @@ export default {
     },
     sendMsg() {
       socket.send("Hello");
-    }
+    },
   },
 }
 </script>
