@@ -7,7 +7,6 @@ import java.util.List;
 public interface MsgListMapper {
     @Select("select * from msg_list")
     List<MsgList> getAllMsgList();
-    @Select("select creater_id=#{uid} or associater_id=#{uid} from msg_list limit #{currentCount},3")
+    @Select("select * from msg_list where creater_id=#{uid} or associater_id=#{uid} limit #{currentCount},3")
     List<MsgList> getMsgListByPage(Integer currentCount ,Integer uid);
-
 }

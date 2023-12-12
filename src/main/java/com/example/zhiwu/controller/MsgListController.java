@@ -21,8 +21,9 @@ public class MsgListController {
         return msgListService.getAllMsgList();
     }
     @GetMapping("/getbypage")
-    public Result getMsgListByPage(@RequestParam Integer currentCount,@RequestParam Integer uid){
+    public Result getMsgListByPage(@RequestParam("currentCount") Integer currentCount,@RequestParam("uid") Integer uid){
         System.out.println(currentCount);
+        System.out.println(uid);
         List<MsgList> msgList = msgListService.getMsgListByPage(currentCount, uid);
         if(msgList.size() == 0){
             return Result.fail("999","没查到东西");

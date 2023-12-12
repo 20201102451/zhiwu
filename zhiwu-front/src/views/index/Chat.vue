@@ -1,11 +1,8 @@
 <template>
   <div class="Chat">
     <div style="float:left; color: #f163c1;font-size: 50px">
-      <div style="color: #f163c1; margin: 5px 50px; font-size: 50px">快来和你的小伙伴聊天吧!!!!!!!!</div>
-      <div style="color: #f163c1; margin: 5px 50px; font-size: 50px">快来和你的小伙伴聊天吧!!!!!!!!</div>
-      <div style="color: #f163c1; margin: 5px 50px; font-size: 50px">快来和你的小伙伴聊天吧!!!!!!!!</div>
-      <div style="color: #f163c1; margin: 5px 50px; font-size: 50px">快来和你的小伙伴聊天吧!!!!!!!!</div>
-      <div style="color: #f163c1; margin: 5px 50px; font-size: 50px">快来和你的小伙伴聊天吧!!!!!!!!</div>
+      <div style="color: #f163c1; margin: 5px 50px; font-size: 50px">{{text}}</div>
+
     </div>
 
     <div style="float: right">
@@ -56,16 +53,8 @@
 <script>
 import chat from "@/views/index/Chat.vue";
 
-const socket = new WebSocket("ws://localhost:8080")
-socket.onopen = function (event) {
-  console.log("连接已打开");
-}
-socket.onmessage = function (event) {
-  console.log("收到回复" + event.data);
-}
-socket.onclose = function (event) {
-  console.log("连接已关闭");
-}
+
+
 
 
 export default {
@@ -87,7 +76,8 @@ export default {
       direction: 'ltr',
       msgList: [],
       currentCount:0,
-      textarea: ''
+      currentUserId: 'Admin',
+      text:'快来和你的小伙伴聊天吧!!!!!!!!',
     };
   },
   computed: {
@@ -101,22 +91,35 @@ export default {
       return this.loading || this.noMore
     }
   },
+  created() {
+    const socket = new WebSocket("ws://localhost:8181");
+    socket.onopen = function (event) {
+      console.log("连接已打开");
+    };
+    socket.onmessage = function (event) {
+      console.log("收到回复" + event.data);
+    };
+    socket.onclose = function (event) {
+      console.log("连接已关闭");
+    };
+    if (!this.$store.state.isAdmin) {
+      this.currentUserId = JSON.parse(localStorage.getItem('user')).userId;
+    }else{
+      this.text = '管理员请发布公共，禁止聊天';
+    }
+  },
   methods: {
     load() {
       this.loading = false;
-      let uid = JSON.parse(localStorage.getItem('user')).userId
-      this.request.get('/chat/get', this.currentCount,uid)
+      let uid = this.currentUserId;
+      if(this.currentUserId != 'Admin'){
+      this.request.get('/chat/getbypage', this.currentCount,uid)
           .then(res=>{
         this.msgList=res;
         console.log(res);
       })
-      //
-      // this.msgList.push({
-      //   msgListID: parseInt(this.msgList[this.msgList.length - 1].msgListID) + 1,
-      //   createrID: '一个 ID',
-      //   associaterID: '另一个 ID',
-      // })
       this.currentCount+= this.msgList.length;
+      }
     },
     loadComment(msgID) {
       console.log(msgID);
@@ -128,7 +131,7 @@ export default {
     },
     sendMsg() {
       socket.send("Hello");
-    }
+    },
   },
 }
 </script>
