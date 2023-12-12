@@ -45,7 +45,7 @@
                                 </span>
                                 <el-dropdown-menu slot="dropdown">
                                     <el-dropdown-item @click="">访问空间</el-dropdown-item>
-                                    <el-dropdown-item @click="">发起私聊</el-dropdown-item>
+                                    <el-dropdown-item ><button @click="upchat(item.createId)"> 发起私聊 </button></el-dropdown-item>
                                 </el-dropdown-menu>
                             </el-dropdown>
                         </div>
@@ -178,7 +178,7 @@ export default {
             this.commentContent = null;
         },
         deletePost(postId) {
-            this.$confirm('确认删除?', '提示', {
+            this.$confirm('确认删除？', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
@@ -195,7 +195,7 @@ export default {
                     })
                 this.$message({
                     type: 'success',
-                    message: '删除成功!'
+                    message: '删除成功！'
                 });
             }).catch(() => {
                 this.$message({
@@ -216,7 +216,25 @@ export default {
                 title: '错误',
                 message: msg
             });
+        },
+      upchat(createId){
+        //定义对象结构
+        console.log("666")
+        const newlist={
+          createrId:this.currentUserId,
+          associaterId:createId,
         }
+        console.log(newlist)
+        this.request.post('/chat/addList',JSON.stringify(newlist)).then(res=>{
+          console.log(res.code);
+          const code = res.code;
+          if (code == '200') {
+            this.sendPostSuccess(res.data);
+          } else {
+            this.sendPostFail(res.data);
+          }
+        });
+      }
 
     }
 }

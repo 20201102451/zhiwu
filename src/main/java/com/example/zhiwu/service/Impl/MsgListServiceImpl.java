@@ -17,4 +17,6 @@ public class MsgListServiceImpl implements MsgListService {
     public List<MsgList> getMsgListByPage(Integer currentCount,Integer uid) {
         return msgListMapper.getMsgListByPage(currentCount,uid);
     }
+    @Override
+    public boolean addMsgList(MsgList msgList){return msgListMapper.addMsgList(msgList);}
 }

@@ -1,6 +1,9 @@
 package com.example.zhiwu.entity;
 
 public class MsgList {
+    public MsgList() {
+    }
+
     private Integer msgListId;
     private Integer createrId;
     private Integer associaterId;

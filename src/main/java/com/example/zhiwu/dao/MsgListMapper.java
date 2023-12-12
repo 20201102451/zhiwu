@@ -10,4 +10,6 @@ public interface MsgListMapper {
     List<MsgList> getAllMsgList();
     @Select("select * from msg_list where creater_id=#{uid} or associater_id=#{uid} limit #{currentCount},3")
     List<MsgList> getMsgListByPage(@Param("currentCount") Integer currentCount , @Param("uid") Integer uid);
+    @Insert("insert into msg_list(creater_id,associater_id) values (#{createrId},#{associaterId})")
+    boolean addMsgList(MsgList msgList);
 }
