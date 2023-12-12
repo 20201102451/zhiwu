@@ -2,12 +2,10 @@ package com.example.zhiwu.controller;
 
 import com.example.zhiwu.common.Result;
 import com.example.zhiwu.entity.Msg;
+import com.example.zhiwu.entity.User;
 import com.example.zhiwu.service.MsgService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,6 +24,15 @@ public class MsgController {
             return Result.fail("999","没查到东西");
         }else{
             return Result.success(msg);
+        }
+    }
+    @PostMapping("/add")
+    public Result addMsg(@RequestBody Msg msg){
+        boolean result = msgService.addMsg(msg);
+        if(result){
+            return Result.success("发送成功！");
+        }else{
+            return Result.fail("发送失败！");
         }
     }
 }

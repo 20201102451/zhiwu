@@ -17,9 +17,9 @@
               </el-button>
             </div>
             <div class="content">
-              这里其实是消息的内容{{ item.msgListId }}
+<!--              这里其实是消息的内容{{ item.msgListId }}-->
             </div>
-            <el-divider content-position="right">这里其实是消息的时间{{ item.msgListId }}</el-divider>
+            <el-divider content-position="right"><!--这里其实是消息的时间{{ item.msgListId }}--></el-divider>
           </el-card>
         </li>
       </ul>
@@ -32,7 +32,7 @@
       <el-card style="height: 600px">
         <ul v-for="(item, index) in msg" :key="index" style="list-style: none;">
           <li style="color:#0DB3BB">
-            {{item.sendTime}}
+<!--            {{item.sendTime}}-->
             {{item.senderId}}对{{item.receiverId}}说：
             <el-card class="msg-card">
               <div style="color: #f163c1">
@@ -45,19 +45,15 @@
       <!-- 发送消息的地方 -->
       <div class="editComment">
         <span>发送消息</span>
-        <el-input type="textarea" :rows="1" placeholder="请输入内容" v-model="textarea" maxlength="20" show-word-limit>
+        <el-input type="textarea" :rows="1" placeholder="请输入内容" v-model="msgContent" maxlength="20" show-word-limit style="margin-top: 1%;">
         </el-input>
-        <el-button style="float: right; margin-top:5px;" type="primary" plain @click="sendMsg()">发送</el-button>
+        <el-button style="float: right; margin-top:5px;" type="primary" plain @click="sendMsg">发送</el-button>
       </div>
     </el-drawer>
   </div>
 </template>
 <script>
 import chat from "@/views/index/Chat.vue";
-
-
-
-
 
 export default {
   data() {
@@ -71,6 +67,9 @@ export default {
       currentCount:0,
       currentUserId: 'Admin',
       text:'快来和你的小伙伴聊天吧!!!!!!!!',
+      list_id:'',
+      msgContent:'',
+      msgYourUserId:'',
     };
   },
   computed: {
@@ -85,16 +84,16 @@ export default {
     }
   },
   created() {
-    const socket = new WebSocket("ws://localhost:8181");
-    socket.onopen = function (event) {
-      console.log("连接已打开");
-    };
-    socket.onmessage = function (event) {
-      console.log("收到回复" + event.data);
-    };
-    socket.onclose = function (event) {
-      console.log("连接已关闭");
-    };
+    // const socket = new WebSocket("ws://localhost:8181");
+    // socket.onopen = function (event) {
+    //   console.log("连接已打开");
+    // };
+    // socket.onmessage = function (event) {
+    //   console.log("收到回复" + event.data);
+    // };
+    // socket.onclose = function (event) {
+    //   console.log("连接已关闭");
+    // };
     if (!this.$store.state.isAdmin) {
       this.currentUserId = JSON.parse(localStorage.getItem('user')).userId;
     }else{
@@ -121,6 +120,7 @@ export default {
     },
     loadComment(msgID) {
       console.log(msgID);
+      this.list_id=msgID;
       this.drawer = true;
       if(this.currentUserId != 'Admin'){
         this.request.get('/chat/gets', {
@@ -130,14 +130,48 @@ export default {
         })
             .then(res=>{
               this.msg=res.data;
-              console.log(res.data[0].msgId);
-              console.log(res.data[0].msgContent);
+              this.msgYourUserId=this.msg[0].receiverId;
+              // console.log(msg[0].msgId);
+              // console.log(msg[0].msgContent);
             })
       }
     },
     sendMsg() {
-      socket.send("Hello");
+      // socket.send("Hello");
+      //定义对象结构
+      const newmsg ={
+        msgListId:this.list_id,
+        senderId:this.currentUserId,
+        receiverId:this.msgYourUserId,
+        msgContent:this.msgContent,
+      }
+      console.log(newmsg);
+      this.request.post('/chat/add',JSON.stringify((newmsg)))
+          .then(res=>{
+            console.log(res.code);
+            const code = res.code;
+            if (code == '200') {
+              this.sendMsgSuccess(res.data);
+              this.loadComment(this.list_id);
+            } else {
+              this.sendMsgFail(res.data);
+            }
+          })
+      this.msgContent =null;
     },
+    sendMsgSuccess(msg) {
+      this.$notify({
+        title: '成功',
+        message: msg,
+        type: 'success'
+      });
+    },
+    sendMsgFail(msg) {
+      this.$notify.error({
+        title: '错误',
+        message: msg
+      });
+    }
   },
 }
 </script>

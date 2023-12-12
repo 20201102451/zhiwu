@@ -1,6 +1,10 @@
 package com.example.zhiwu.entity;
 
 public class Msg {
+    public Msg() {
+    }
+
+
     private Integer msgId;
     private Integer senderId;
     private Integer receiverId;
@@ -76,4 +80,5 @@ public class Msg {
                 ", msgListId=" + msgListId +
                 '}';
     }
+
 }

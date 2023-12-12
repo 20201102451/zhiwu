@@ -17,5 +17,8 @@ public class MsgServiceImpl implements MsgService {
     public List<Msg> getMsgByPage(Integer msg_list_id){
         return msgMapper.getMsgByPage(msg_list_id);
     }
-
+    @Override
+    public boolean addMsg(Msg msg){
+        return msgMapper.addMsg(msg);
+    }
 }

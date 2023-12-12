@@ -7,4 +7,6 @@ public interface MsgService {
 
     List<Msg> getAllMsg();
     List<Msg> getMsgByPage(Integer msg_list_id);
+
+    boolean addMsg(Msg msg);
 }
