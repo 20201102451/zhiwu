@@ -7,6 +7,7 @@
         <el-tab-pane label="我的消息" name="我的消息"></el-tab-pane>
         <el-tab-pane label="我的空间" name="我的空间"></el-tab-pane>
         <el-tab-pane label="公告板块"></el-tab-pane>
+        <el-tab-pane label="飞鸽信笺" name="飞鸽信笺"></el-tab-pane>
         <el-tab-pane v-if="isAdmin" label="公告管理"></el-tab-pane>
       </el-tabs>
     </el-aside>
@@ -33,11 +34,13 @@
 <script>
 import Post from './Post.vue';
 import Chat from './Chat.vue';
+import Email from './EmailSend.vue'
 import { mapGetters, mapMutations } from 'vuex';
 export default {
   components: {
     Post,
     Chat,
+    Email,
   },
   data() {
     return {
@@ -67,18 +70,18 @@ export default {
         this.$router.push("/post/love")
         this.displaySendPostButton();
       } else if (tab.index == 2) {
-
         this.$router.push("/chat")
         this.hiddenSendPostButton();
-
       } else if (tab.index == 3) {
         this.$router.push("/myInfo")
         this.hiddenSendPostButton();
       } else if (tab.index == 4) {
         this.$router.push("/noticeBoard")
         this.hiddenSendPostButton();
-
       } else if (tab.index == 5) {
+        this.$router.push("/email")
+        this.hiddenSendPostButton();
+      } else if (tab.index == 6) {
         this.$router.push("/noticeManagement")
         this.hiddenSendPostButton();
       }
