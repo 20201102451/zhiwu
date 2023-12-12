@@ -33,7 +33,7 @@
         <ul v-for="(item, index) in msg" :key="index" style="list-style: none;">
           <li style="color:#0DB3BB">
 <!--            {{item.sendTime}}-->
-            {{item.senderId}}对{{item.receiverId}}说：
+            {{item.senderId}}说：
             <el-card class="msg-card">
               <div style="color: #f163c1">
                 {{ item.msgContent }}
@@ -113,7 +113,9 @@ export default {
       })
           .then(res=>{
         this.msgList=res.data;
-        this.msgYourUserId=res.data.receiverId;
+        if (this.msgList != []){
+          this.msgYourUserId=res.data.associaterId;
+        }
         console.log(res);
       })
       this.currentCount+= this.msgList.length;
@@ -131,6 +133,7 @@ export default {
         })
             .then(res=>{
               this.msg=res.data;
+              // this.msgYourUserId=res.date.receiverId;
               // if(this.msg.length!=0) {
               //   this.msgYourUserId = this.msg[0].receiverId;
               // }
