@@ -31,9 +31,11 @@
       <!--这是消息的显示-->
       <el-card style="height: 600px">
         <ul v-for="(item, index) in msg" :key="index" style="list-style: none;">
-          <li>
+          <li style="color:#0DB3BB">
+            {{item.sendTime}}
+            {{item.senderId}}对{{item.receiverId}}说：
             <el-card class="msg-card">
-              <div>
+              <div style="color: #f163c1">
                 {{ item.msgContent }}
               </div>
             </el-card>
@@ -43,7 +45,7 @@
       <!-- 发送消息的地方 -->
       <div class="editComment">
         <span>发送消息</span>
-        <el-input type="textarea" :rows="1" placeholder="请输入内容" v-model="textarea" maxlength="255" show-word-limit>
+        <el-input type="textarea" :rows="1" placeholder="请输入内容" v-model="textarea" maxlength="20" show-word-limit>
         </el-input>
         <el-button style="float: right; margin-top:5px;" type="primary" plain @click="sendMsg()">发送</el-button>
       </div>
@@ -60,16 +62,7 @@ import chat from "@/views/index/Chat.vue";
 export default {
   data() {
     return {
-      msg: [
-        {
-          msgID: '',
-          senderID: '',
-          receiverID: '',
-          msgContent: '',
-          sendTime: '',
-          msgListID: 0,
-        },
-      ],
+      msg: [],
       count: 0,
       loading: false,
       drawer: false,
@@ -136,14 +129,11 @@ export default {
           }
         })
             .then(res=>{
-              this.msgList=res.data;
-              console.log(res);
+              this.msg=res.data;
+              console.log(res.data[0].msgId);
+              console.log(res.data[0].msgContent);
             })
       }
-      // for (let i = 0; i < this.msgList.length; i++) {
-      //   this.msg[i].msgListID = msgID;
-      //   this.msg[i].msgContent = "这是之前的消息"
-      // }
     },
     sendMsg() {
       socket.send("Hello");
