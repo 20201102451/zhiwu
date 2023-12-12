@@ -113,6 +113,7 @@ export default {
       })
           .then(res=>{
         this.msgList=res.data;
+        this.msgYourUserId=res.data.receiverId;
         console.log(res);
       })
       this.currentCount+= this.msgList.length;
@@ -130,7 +131,9 @@ export default {
         })
             .then(res=>{
               this.msg=res.data;
-              this.msgYourUserId=this.msg[0].receiverId;
+              // if(this.msg.length!=0) {
+              //   this.msgYourUserId = this.msg[0].receiverId;
+              // }
               // console.log(msg[0].msgId);
               // console.log(msg[0].msgContent);
             })

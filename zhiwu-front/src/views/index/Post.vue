@@ -23,7 +23,7 @@
                             </span>
                             <el-dropdown-menu slot="dropdown">
                                 <el-dropdown-item @click="">访问空间</el-dropdown-item>
-                                <el-dropdown-item @click="">发起私聊</el-dropdown-item>
+                                <el-dropdown-item ><el-button type="text" @click="upchat(item.createId)"> 发起私聊 </el-button></el-dropdown-item>
                             </el-dropdown-menu>
                         </el-dropdown>
                     </el-divider>
@@ -45,7 +45,7 @@
                                 </span>
                                 <el-dropdown-menu slot="dropdown">
                                     <el-dropdown-item @click="">访问空间</el-dropdown-item>
-                                    <el-dropdown-item ><button @click="upchat(item.createId)"> 发起私聊 </button></el-dropdown-item>
+                                    <el-dropdown-item ><el-button type="text" @click="upchat(item.createId)"> 发起私聊 </el-button></el-dropdown-item>
                                 </el-dropdown-menu>
                             </el-dropdown>
                         </div>

@@ -31,7 +31,7 @@
           </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item @click="">访问空间</el-dropdown-item>
-            <el-dropdown-item @click="">发起私聊</el-dropdown-item>
+            <el-dropdown-item ><el-button type="text" @click="upchat(email.senderId)"> 发起私聊 </el-button></el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
 
@@ -131,7 +131,38 @@ export default {
         title: '错误',
         message: msg
       });
-    }
+    },
+    upchat(createId){
+      //定义对象结构
+      console.log("666")
+      const newlist={
+        createrId:this.currentUserId,
+        associaterId:createId,
+      }
+      console.log(newlist)
+      this.request.post('/chat/addList',JSON.stringify(newlist)).then(res=>{
+        console.log(res.code);
+        const code = res.code;
+        if (code == '200') {
+          this.sendPostSuccess(res.data);
+        } else {
+          this.sendPostFail(res.data);
+        }
+      });
+    },
+    sendPostSuccess(msg) {
+      this.$notify({
+        title: '成功',
+        message: msg,
+        type: 'success'
+      });
+    },
+    sendPostFail(msg) {
+      this.$notify.error({
+        title: '错误',
+        message: msg
+      });
+    },
   }
 }
 </script>
