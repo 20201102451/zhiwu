@@ -87,7 +87,6 @@ export default {
     created() {
         if (!this.$store.state.isAdmin) {
             this.currentUserId = JSON.parse(localStorage.getItem("user")).userId.toString();
-
         }
     }
     , computed: {
@@ -100,7 +99,7 @@ export default {
         }
     },
     methods: {
-        canDelete(createId){
+        canDelete(createId) {
             return createId == this.currentUserId || this.$store.state.isAdmin == true
         },
         load() {
@@ -176,6 +175,7 @@ export default {
                         this.sendPostFail(res.data);
                     }
                 })
+            this.commentContent = null;
         },
         deletePost(postId) {
             this.$confirm('确认删除?', '提示', {

@@ -124,6 +124,8 @@ export default {
             this.sendPostFail(res.data);
           }
         })
+        this.sendingPostContent = null;
+        this.sendingPostTitle = null;
 
     },
     sendPostSuccess(msg) {

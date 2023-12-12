@@ -6,6 +6,9 @@ public class Email {
     private String emailContent;
     private Integer receiverId;
 
+    public Email() {
+    }
+
     public Email(Integer emailId, Integer senderId, String emailContent, Integer receiverId) {
         this.emailId = emailId;
         this.senderId = senderId;

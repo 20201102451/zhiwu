@@ -4,7 +4,7 @@ import Index from '@/views/index/Index.vue'
 import Post from "@/views/index/Post.vue"
 import Chat from "@/views/index/Chat.vue";
 import Post2 from "@/views/index/Post2.vue"
-import Email from "@/views/index/EmailSend.vue"
+import EmailSend from "@/views/index/EmailSend.vue"
 Vue.use(VueRouter)
 
 const routes = [
@@ -36,7 +36,7 @@ const routes = [
             {
                 path: '/email',
                 name: 'email',
-                component: Email
+                component: EmailSend
             }
         ]
     },
