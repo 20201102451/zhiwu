@@ -1,10 +1,12 @@
 package com.example.zhiwu.controller;
 
+import com.example.zhiwu.common.Result;
 import com.example.zhiwu.entity.Msg;
 import com.example.zhiwu.service.MsgService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -14,6 +16,16 @@ import java.util.List;
 public class MsgController {
     @Autowired
     private MsgService msgService;
-    @GetMapping("/gets")
+    @GetMapping("/getting")
     public List<Msg> getAllMsg(){return msgService.getAllMsg();}
+    @GetMapping("/gets")
+    public Result getMsgByPage(@RequestParam("msg_list_id") Integer msg_list_id){
+        System.out.println(msg_list_id);
+        List<Msg> msg = msgService.getMsgByPage(msg_list_id);
+        if(msg.size() == 0){
+            return Result.fail("999","没查到东西");
+        }else{
+            return Result.success(msg);
+        }
+    }
 }

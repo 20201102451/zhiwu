@@ -14,8 +14,8 @@ public class MsgServiceImpl implements MsgService {
     @Override
     public List<Msg> getAllMsg(){return msgMapper.getAllMsg();}
     @Override
-    public List<Msg> getMsgByPage(Integer currentCount,Integer uid){
-        return msgMapper.getMsgByPage(currentCount, uid);
+    public List<Msg> getMsgByPage(Integer msg_list_id){
+        return msgMapper.getMsgByPage(msg_list_id);
     }
 
 }

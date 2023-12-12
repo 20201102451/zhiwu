@@ -6,5 +6,5 @@ import org.springframework.stereotype.Service;
 public interface MsgService {
 
     List<Msg> getAllMsg();
-    List<Msg> getMsgByPage(Integer currentCount ,Integer uid);
+    List<Msg> getMsgByPage(Integer msg_list_id);
 }

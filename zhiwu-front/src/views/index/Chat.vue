@@ -113,9 +113,14 @@ export default {
       this.loading = false;
       let uid = this.currentUserId;
       if(this.currentUserId != 'Admin'){
-      this.request.get('/chat/getbypage', this.currentCount,uid)
+      this.request.get('/chat/getbypage', {
+        params:{
+          currentCount:this.currentCount,
+          uid:uid
+        }
+      })
           .then(res=>{
-        this.msgList=res;
+        this.msgList=res.data;
         console.log(res);
       })
       this.currentCount+= this.msgList.length;
@@ -124,10 +129,21 @@ export default {
     loadComment(msgID) {
       console.log(msgID);
       this.drawer = true;
-      for (let i = 0; i < this.msgList.length; i++) {
-        this.msg[i].msgListID = msgID;
-        this.msg[i].msgContent = "这是之前的消息"
+      if(this.currentUserId != 'Admin'){
+        this.request.get('/chat/gets', {
+          params:{
+            msg_list_id: msgID,
+          }
+        })
+            .then(res=>{
+              this.msgList=res.data;
+              console.log(res);
+            })
       }
+      // for (let i = 0; i < this.msgList.length; i++) {
+      //   this.msg[i].msgListID = msgID;
+      //   this.msg[i].msgContent = "这是之前的消息"
+      // }
     },
     sendMsg() {
       socket.send("Hello");
